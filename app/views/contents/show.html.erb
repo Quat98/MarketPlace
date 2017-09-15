@@ -1,0 +1,53 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+	<div class="col s6">
+		<%= image_tag @content.cover.url, :class => "responsive-img img_show" %>
+	</div>
+	<div class="col s6">
+		<h1 class="show_titolo"><%= @content.titolo %></h1>
+
+<h5>Price:<%= number_to_currency(@content.price) %></h5>
+
+<p>
+  Venduto da 
+  <%= @content.user.name %>
+</p>
+
+<p>
+  <strong>Descrizione:</strong>
+  <%= @content.descrizione %>
+</p>
+
+
+  <% if current_user %>
+    <%= form_tag compra_path(slug: @content.slug) do %>
+      <script
+        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+        data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+        data-amount="<%= (@content.price*100).floor %>"
+        data-name="marketplace"
+        data-description="<%= @content.titolo %>"
+        data-email="<%= current_user.email %>"
+
+        data-locale="auto"
+
+        data-currency="eur">
+      </script>
+    <%end %>
+
+  <% else %>
+
+  <p> Fai il login per acquistare il contenuto </p>
+   <%= link_to "Log In" , new_user_session_path %> Oppure
+    <%= link_to "SignUp" , new_user_registration_path %>
+    <% end %>
+
+
+	</div>
+</div>
+
+ <% if @content.user == current_user %>
+	<%= link_to 'Edit', edit_content_path(@content) %> |
+<%end %>
+<%= link_to 'Back', contents_path %>

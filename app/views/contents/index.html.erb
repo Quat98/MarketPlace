@@ -1,0 +1,45 @@
+
+
+<!--<h1>Listing Contents</h1>-->
+
+<div class="row">
+    <% @contents.each do |content| %>
+  <div class="col s3">
+    <div class="card">
+        <div class="card-image waves-effect waves-block waves-light">
+          <%= image_tag content.cover.url, :class => "activator" %>
+          
+        </div>
+        <div class="card-content">
+          <span class="card-title activator grey-text text-darken-4"><%= content.titolo %><i class="material-icons right">more_vert</i></span>
+          <div>
+              <span>Sell by <%= content.user.name if content.user %></span>
+              <span class="right"><%= number_to_currency(content.price) %></span>
+          </div>
+          <br>
+
+
+          <div class="center"><%= link_to 'Show', content, class:"btn" %></div> 
+           <% if content.user == current_user %>
+           <br>
+          <div class="center"><p><%= link_to 'Edit', edit_content_path(content) %> 
+           <%= link_to 'Destroy', content, method: :delete, data: { confirm: 'Are you sure?' } %></p></div>
+           <% end %>
+        </div>
+        <div class="card-reveal">
+          <span class="card-title grey-text text-darken-4"><%= content.titolo %><i class="material-icons right">close</i></span>
+          <p><%= content.descrizione %></p>
+        </div>
+      </div>
+       
+    </div>
+    <% end %>
+
+
+</div>
+
+
+
+<br>
+
+<div class="center"><%= will_paginate @contents %></div>
